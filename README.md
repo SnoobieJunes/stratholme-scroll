@@ -2,7 +2,7 @@
 
 Live: https://snoobiejunes.github.io/stratholme-scroll/
 
-One page. Paste a character's story. Save one image. Post it where a character limit would have cut them off.
+The page uses whatever window you give it. Type shrinks, and the story runs in columns, until the whole tale fits on that one screen. Widen the window if you want larger type.
 
 Friar Baggins is loaded as the sample. **New associate** clears the scroll.
 
