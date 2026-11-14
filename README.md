@@ -1,5 +1,7 @@
 # Stratholme Supply Company — Scroll
 
+Live: https://snoobiejunes.github.io/stratholme-scroll/
+
 One page. Paste a character's story. Save one image. Post it where a character limit would have cut them off.
 
 Friar Baggins is loaded as the sample. **New associate** clears the scroll.
