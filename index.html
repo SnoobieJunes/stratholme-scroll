@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stratholme Supply Company — Scroll</title>
+<style id="sheet">
+  :root {
+    --desk: #14110e;
+    --desk-ink: #e8e0d4;
+    --desk-dim: #9a8e80;
+    --desk-line: #3a3228;
+    --gold: #9d7c4b;
+    --parchment: #f3e4c4;
+    --ink: #2a2118;
+    --ink-soft: #4a3b2c;
+    --brown: #5c4632;
+    --aster: #8a3a32;
+    --rule: rgba(92, 58, 24, 0.4);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--desk);
+    color: var(--desk-ink);
+    font-family: "Avenir Next", "Segoe UI", "Gill Sans", "Trebuchet MS", sans-serif;
+  }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 1px solid var(--gold);
+    outline-offset: 2px;
+  }
+  .app {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 24px;
+    width: max-content;
+    max-width: 100%;
+  }
+  @media (max-width: 1180px) {
+    .app { flex-direction: column; width: auto; }
+  }
+  .desk { width: 340px; max-width: 100%; position: sticky; top: 16px; flex: none; }
+  .desk h1 {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .lede { margin: 0 0 16px; color: var(--desk-dim); font-size: 14px; line-height: 1.45; }
+  .row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .row button, .savebar button {
+    min-height: 44px;
+    background: transparent;
+    border: 1px solid var(--desk-line);
+    color: var(--desk-ink);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 0 12px;
+  }
+  .row button { flex: 1; }
+  .row button[aria-pressed="true"] { border-color: var(--gold); color: #f0e2c4; }
+  label {
+    display: block;
+    margin: 12px 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--desk-dim);
+  }
+  input, textarea {
+    width: 100%;
+    background: #1c1814;
+    border: 1px solid var(--desk-line);
+    border-radius: 2px;
+    padding: 8px 10px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  textarea { min-height: 240px; resize: vertical; }
+  .hint { margin: 6px 0 0; color: var(--desk-dim); font-size: 13px; line-height: 1.4; }
+  details { margin-top: 8px; }
+  summary {
+    cursor: pointer;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--desk-dim);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .count { margin: 16px 0 8px; font-size: 14px; }
+  .savebar { display: flex; flex-direction: column; gap: 8px; }
+  .savebar button.primary {
+    background: #2a2118;
+    border-color: var(--gold);
+    color: var(--parchment);
+  }
+  .status { min-height: 1.4em; margin: 10px 0 0; font-size: 13px; line-height: 1.4; color: #f0e2c4; }
+  .fine-note { margin: 18px 0 0; color: var(--desk-dim); font-size: 12px; line-height: 1.45; }
+
+  .stage { padding: 8px 0 32px; }
+
+  .scroll {
+    width: 736px;
+    padding: 6px 28px 10px;
+    background: transparent;
+  }
+  .rod {
+    height: 20px;
+    margin: 0 -6px;
+    border-radius: 10px;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(180deg, #e4c59a 0%, #b48458 22%, #7a5230 52%, #3e2816 100%);
+    box-shadow: 0 2px 0 #1a1008, 0 7px 12px rgba(20, 10, 4, 0.4);
+  }
+  .rod::before, .rod::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    width: 12px;
+    height: 28px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #d7b48a, #5a3820 70%, #2a1a10);
+  }
+  .rod::before { left: -2px; }
+  .rod::after { right: -2px; }
+  .rod.bottom { box-shadow: 0 -1px 0 #1a1008, 0 6px 12px rgba(20, 10, 4, 0.35); }
+
+  .sheet {
+    position: relative;
+    z-index: 1;
+    margin: -7px 0;
+    min-height: 640px;
+    background: var(--parchment);
+    color: var(--ink);
+    padding: 32px 54px 36px;
+    font-family: Palatino, "Palatino Linotype", "Iowan Old Style", "Book Antiqua", Georgia, serif;
+    box-shadow:
+      inset 18px 0 22px rgba(92, 58, 24, 0.07),
+      inset -18px 0 22px rgba(92, 58, 24, 0.07),
+      inset 0 22px 18px rgba(92, 58, 24, 0.05),
+      inset 0 -16px 14px rgba(92, 58, 24, 0.05);
+  }
+  .seal { text-align: center; }
+  .crest { width: 92px; height: auto; display: block; margin: 0 auto 10px; }
+  .wordmark {
+    font-family: "Avenir Next", "Segoe UI", "Gill Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #4a3422;
+  }
+  .slogan {
+    margin: 5px 0 0;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--brown);
+  }
+  .certline {
+    margin: 4px 0 0;
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6a5340;
+  }
+  .aster { color: var(--aster); font-style: normal; letter-spacing: 0; }
+  .name {
+    margin: 22px 0 0;
+    text-align: center;
+    font-size: 38px;
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: #241910;
+    overflow-wrap: anywhere;
+  }
+  .title {
+    margin: 6px 0 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.3;
+    color: var(--ink-soft);
+  }
+  .bits {
+    margin: 10px 0 0;
+    text-align: center;
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.45;
+    color: #6a5340;
+  }
+  .motto {
+    margin: 16px 36px 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .opening {
+    margin: 10px 20px 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .hair {
+    width: 96px;
+    height: 1px;
+    margin: 18px auto 0;
+    background: #8a6840;
+    border: 0;
+  }
+  .tale { margin-top: 18px; }
+  .tale h2 {
+    margin: 1.15em 0 0.3em;
+    font-size: 20px;
+    font-variant: small-caps;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: #4a3018;
+  }
+  .tale h2:first-child { margin-top: 0.2em; }
+  .tale p, .tale .empty {
+    margin: 0 0 0.8em;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .tale .empty { font-style: italic; color: var(--ink-soft); }
+  .tale em { font-style: italic; }
+  .tale strong { font-weight: 600; }
+  .colophon {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+  .legal, .wink, .fileno {
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #5c4a3a;
+  }
+  .legal { margin: 8px auto 0; max-width: 52em; }
+  .wink { margin: 6px 0 0; }
+  .tag {
+    margin-top: 12px;
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #4a3422;
+  }
+  .fileno { margin-top: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-size: 11px; }
+
+  body.shot { background: var(--desk); }
+  body.shot .app { padding: 0; gap: 0; }
+  body.shot .desk { display: none !important; }
+  @media print {
+    .desk { display: none !important; }
+    html, body, .app { background: white; padding: 0; width: auto; margin: 0; }
+    .scroll { width: 736px; }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="desk" id="desk">
+      <h1>Scroll</h1>
+      <p class="lede">Paste a story in their own words. The scroll is one image. Save it and post it. This panel is not in the image.</p>
+      <div class="row">
+        <button type="button" id="btnFriar" aria-pressed="true">Friar's scroll</button>
+        <button type="button" id="btnBlank" aria-pressed="false">New associate</button>
+      </div>
+      <label for="f-name">Name</label>
+      <input id="f-name" autocomplete="off" placeholder="Name as it should read">
+      <label for="f-title">Title</label>
+      <input id="f-title" autocomplete="off" placeholder="Optional">
+      <label for="f-story">Story</label>
+      <textarea id="f-story" spellcheck="true" placeholder="Paste the story here."></textarea>
+      <p class="hint">Blank line between paragraphs. A line that is only **Like This** or # Like This becomes a heading. *asterisks* make italics. The story is not rewritten.</p>
+      <details open>
+        <summary>On the scroll</summary>
+        <label for="f-post">Post</label>
+        <input id="f-post" list="posts" autocomplete="off" placeholder="Proprietor, associate…">
+        <datalist id="posts">
+          <option value="Proprietor"></option>
+          <option value="Associate"></option>
+          <option value="Artisan"></option>
+          <option value="Soldier"></option>
+          <option value="Adventurer"></option>
+          <option value="Researcher"></option>
+          <option value="Product tester"></option>
+          <option value="Teamster"></option>
+          <option value="Recruiter"></option>
+        </datalist>
+        <label for="f-dept">Department</label>
+        <input id="f-dept" list="depts" autocomplete="off" placeholder="Changes the note at the foot">
+        <datalist id="depts">
+          <option value="Field Supply"></option>
+          <option value="Artisans"></option>
+          <option value="Soldiers"></option>
+          <option value="Adventurers"></option>
+          <option value="Research &amp; Development"></option>
+          <option value="Product Testing"></option>
+          <option value="Logistics"></option>
+          <option value="Recruitment"></option>
+        </datalist>
+        <label for="f-class">Class</label>
+        <input id="f-class" autocomplete="off">
+        <label for="f-origin">Origin</label>
+        <input id="f-origin" autocomplete="off">
+        <label for="f-former">Former life</label>
+        <input id="f-former" autocomplete="off">
+        <label for="f-motto">Motto</label>
+        <input id="f-motto" autocomplete="off" placeholder="Their words. Optional.">
+        <label for="f-open">Opening line</label>
+        <input id="f-open" autocomplete="off" placeholder="Optional. Sits under the motto, in their voice.">
+        <label for="f-file">File number</label>
+        <input id="f-file" autocomplete="off" placeholder="SSC-0001">
+      </details>
+      <p class="count" id="count"></p>
+      <div class="savebar">
+        <button type="button" class="primary" id="saveOne">Save scroll</button>
+        <button type="button" id="doPrint">Print / save PDF</button>
+      </div>
+      <p class="status" id="status" role="status"></p>
+      <p class="fine-note">The seal and the note at the foot are the Company. The tale is theirs. Discord shows the top of a tall image in the channel — the name sits under the seal. Open the image to read the rest.</p>
+    </aside>
+    <main class="stage" id="stage"></main>
+  </div>
+<script>
+const SEAL = `<svg xmlns="http://www.w3.org/2000/svg" class="crest" viewBox="0 0 80 92" role="img" aria-label="Stratholme Supply Company"><path fill="#5c3d22" d="M40 2.5 L75 16.2 V41.5 C75 62.2 57.2 76.8 40 89.2 C22.8 76.8 5 62.2 5 41.5 V16.2 Z"/><path fill="none" stroke="#f3e4c4" stroke-width="0.9" d="M40 9 L67 20.2 V41.5 C67 58.6 53.2 70.6 40 80.6 C26.8 70.6 13 58.6 13 41.5 V20.2 Z"/><g fill="#f3e4c4"><rect x="38.35" y="30" width="3.3" height="40" rx="1.2"/><path d="M40 33c-7 1.2-12 6.2-11.2 10.2 4.2-1.6 8.2-5.6 11.2-10.2z"/><path d="M40 33c7 1.2 12 6.2 11.2 10.2-4.2-1.6-8.2-5.6-11.2-10.2z"/><path d="M40 44c-8 1.4-13.5 7-12.4 11.2 4.6-1.8 9-6.2 12.4-11.2z"/><path d="M40 44c8 1.4 13.5 7 12.4 11.2-4.6-1.8-9-6.2-12.4-11.2z"/><path d="M40 55c-6.5 1.1-11 5.6-10.2 9.2 3.8-1.4 7.4-5 10.2-9.2z"/><path d="M40 55c6.5 1.1 11 5.6 10.2 9.2-3.8-1.4-7.4-5-10.2-9.2z"/></g></svg>`;
+const KEY = "ssc-scroll-v1";
+const FRIAR = {"name": "Friar Baggins", "title": "The Shockadin of the Forgotten Hollow", "post": "Proprietor", "department": "Field Supply", "klass": "Paladin (Shockadin)", "origin": "Aerie Peak", "former": "Wildhammer warrior", "motto": "Good folk are good folk. The rest get the Shock.", "opening": "Set down here in the manner of a tale told over ale, which is the only proper manner for such things. Although the Friar would insist on a pipe as well.", "fileNo": "SSC-0001", "story": "**Born Under Gryphon Wing**  \n  \nFriar Baggins was born a Wildhammer, in the long shadow of Aerie Peak, where the wind comes screaming off the Hinterlands and every dwarf child learns the cry of a gryphon before he learns his letters.  \n  \nHe was not, in his youth, a holy dwarf. He was barely a patient one.  \n  \nWhere other Wildhammer younglings took to the sky, to shamanism, or to the slow craft of stone and storm, young Baggins took to fighting. He was a warrior of the old, ugly sort — fueled by rage, stubborn as wet leather, and convinced that most problems in Azeroth could be solved by hitting them until they stopped being problems. He fought trolls in the green hills. He fought orcs when the Horde came north. He fought, on more than one occasion, other dwarves in mead halls over insults he could not afterward remember.  \n  \nThe rage served him, after a fashion. It kept him alive. It kept others alive too, though he would not have admitted at the time that this was the part that mattered.  \n  \nAge has a way of sanding a dwarf down to what is actually true about him. By the time there was grey in Baggins’ beard, he had begun to understand that he had never loved the fighting. He had loved standing between the fighting and the people who could not fight for themselves.  He just did not yet have a name for that. Or a faith for it.  \n  \n**The Village the Maps Forgot**  \n  \nEveryone remembers Lordaeron.  Everyone remembers Stratholme, and Andorhal, and the great blighted scar men now call the Plaguelands. Bards sing of Arthas. Priests preach of Uther. The Argent Dawn keeps its vigil at Light’s Hope, and rightly so.  Nobody remembers Thistleroot Hollow.  It was a little place.  \n\nA Wildhammer steading of a few dozen families, kin to Aerie Peak, tucked into the northwestern hills where the Hinterlands look toward Lordaeron. Too small for the maps the human kings kept. Too far from Ironforge to matter to the Bronzebeards. A place of smokehouses and trout streams and old grudges and older kindnesses.  \n\nThe plague did not care that it was too small to remember.  \n\nIt came on the wind and in the grain, in travelers who sickened on the road and in beasts that died standing in the fields. Then came the undeath behind it, as it always does. Baggins watched neighbors he had known since boyhood rise with empty eyes. He put down more of his own clan with his own hands in one autumn than he had enemies in all his warring years. There are things he did in Thistleroot Hollow that he has never spoken aloud, and never will. Some graves a dwarf digs in silence and carries in silence.  \n\nWhen it was over, most of his clan was gone.  What the plague began, abandonment finished.  The Alliance did come, after a fashion. Wagons rolled through, full of food and clean water and men in bright tabards with somewhere more important to be. Baggins begged and a Wildhammer does NOT beg lightly for grain, for medicine, for a priest, for anything.  \n\nThey looked at the hollow. They looked at the blighted fields.  *You chose to live this close to Lordaeron,* they told him. *If you don’t like it, abandon it and move.*  They had riches. They had food. They offered none of it.  That was the day the rage in Friar Baggins stopped being a fire he USED, and became a fire that USED HIM.  \n  \n**Exile Between River and Sea**  \n  \nHe left Thistleroot Hollow with the only family he had left: his father.  *Or what was left of his father.* A husk of a man.  The old dwarf had survived the plague years in body, but the man inside had gone somewhere quiet and far away and did not come back. He ate when food was put in his hands. He stared at the hills. Sometimes he called for people who were twenty years in the ground.  \n\nBaggins carried him into exile anyway. It is a particular kind of love, carrying a husk and calling it father, but it is love all the same.  \n  \nThey settled where nobody wanted to settle, on the wild coast where the rivers of the Hinterlands run down toward Arathi, at the very edge of the frontier. A driftwood shack. A cold hearth. What game he could take, what fish he could catch, what work a broken old warrior could do without having to look another person in the eye.  \n\nThe rage never left him in those years. He kept it banked down the only ways he knew: strong ale, and a pipe of good leaf — the halflings’ herb, procured through channels he will still, to this day, decline to explain.  And slowly, without ever deciding to, the two exiles grew fond of the wild things around them. Baggins splinted the wing of a fallen gryphon chick and fed it by hand for a month. He left fish heads out for a three-legged fox. He learned the moods of the river the way his shaman kin learned them, by listening long enough that listening became a kind of prayer.  He never converted. The elements were never his to command, and he knew it. But he became something *almost* shamanistic out there on the coast, a dwarf who had lost his people and been quietly adopted by a place.  \n \nHis father died on a still morning, facing the water. Baggins buried him facing Aerie Peak, and sat by the grave until the pipe went out.  Then he was alone, and the rage had nothing left to protect.  \n \n**The Bear, the Paladin, and the Riverbank**  \n  \nThe Light, when it finally came for Friar Baggins, did not come in a cathedral. It came in the shape of a wounded bear.  \n\nHe found her by the river with her leg torn open from a deadfall trap, some poacher’s cruelty left to rot. A wiser dwarf would have left her. Baggins, who had never been accused of wisdom, spent the better part of an afternoon speaking to her in the low, steady voice you use for frightened things, and was most of the way through binding the leg with strips of his own shirt when he heard the harness-bells of a warhorse behind him.  \n  \nThe human was a paladin, Sir Emric Hale, late of the Argent Dawn, road-worn and grey at the temples. He said nothing at first. He simply dismounted, knelt in the mud beside a half-feral dwarf and a very unhappy bear, laid his hands above the wound, and prayed.  The Light closed the leg like a seam drawn shut. The bear, with the sound ingratitude of all wild things, bolted into the trees.  The two of them looked at each other. Then Baggins did the only sensible thing. He got out the fishing lines, the pipe, and the ale.  \n\nThey sat on that riverbank until the stars came up. They fished, and smoked, and drank, and traded tales the way old soldiers do.  Slowly, sideways, and never quite starting with the part that hurts.  Eventually, the talk turned to the undead.  Baggins told him about Thistleroot Hollow.  When he finished, Sir Emric was very quiet. Then the Light came up in the man’s eyes like sunrise off deep water, and he said, with the absolute certainty of the truly called, that this meeting was no coincidence at all.  \n\nEmric was on a pilgrimage of his own devising: walking the countryside of the fallen north to trace the true origins of the undeath.  A plague grain, Scourge cauldrons, cultists and kings and to bear witness to an uncomfortable truth he had come to believe with his whole heart.  \n \nThat the Forsaken were not the Scourge.  \n \nThat the free-willed dead of Lordaeron were victims of the same horror that had taken Thistleroot Hollow and not its authors. The idea that good, kind folk needed protecting regardless of what shape they wore, living or dead, Alliance or Horde.  It was, for Friar Baggins, a concerning sermon. It asked him to lay down the oldest and most justified grudge of his life. It asked him to let vigilance in where vengeance had lived.  It asked him, in short, to be reborn.  \n\n**A Pilgrimage Instead of a Seminary**  \n  \nFriar Baggins was never classically trained in the Light, and it shows, and he would not have it any other way.  No cathedral school would have taken a pipe-smoking, ale-swilling, rage-scarred old Wildhammer who questioned everything and knelt for nothing. So Emric trained him the only way that could have worked: on the road. They walked the holy places of Azeroth together. Light’s Hope Chapel, where the dead paladins keep their long watch. Uther’s Tomb, where Baggins’ hands finally stopped shaking. The ruined cathedral at Stratholme, where he wept without shame. Northshire Abbey, and the great Cathedral of Stormwind, and a dozen nameless roadside shrines where some forgotten soul had once stopped to pray and left a candle’s worth of hope behind.  \n  \nAt each place they prayed, and with each incantation, the Light came a little more readily to the old dwarf’s hands.  But it never came the way it comes to proper paladins. It would not sit politely in a blade or flow through the measured forms of sword-and-shield. Baggins had spent a lifetime holding a storm inside his chest, and the Light, finding that storm there, simply *used* it. It comes off him in short, searing bursts.  A crack of holy fire at close range, like a Wildhammer stormhammer thrown from an empty hand. The Argent Dawn chaplains have no tidy category for him. \n\nHis fellow paladins call him, half in jest and half in genuine respect, a **shockadin**.  He considers this the finest title he has ever earned.  \n  \nSomewhere on that long road in Brill, of all places he met a Forsaken woman who had known Thistleroot Hollow in life. She remembered his mother’s name. She wept, in the dry way the dead weep, for the same fields he wept for. Baggins laid a blessing on her with hands that trembled, and felt the last of the old grudge go out of him like a splinter drawn at last.  \n \nThe Forsaken were not *them*. They never had been.  \n  \n**The Stratholme Supply Company**  \n \nThese days, if you travel the roads of the fallen north, you may see his wagons.  They bear a simple mark: a burst of golden light over a laden sack. Beneath it, in plain letters: **Stratholme Supply Company**.  \n\nIt is an odd name for an odd enterprise, born quite deliberately out of the ruins of the old city, so that Baggins never forgets what it is for. The Company hauls untainted grain, clean water, medicine, lamp oil, timber, and coffins.  Always coffins, to the places the great factions forget. Wildhammer steadings. Argent outposts. Forsaken hamlets. Human refugee camps and troll fishing villages in equal measure.  \n  \nHe asks what folk can pay. He very often accepts what folk cannot.  \n\nHe remembers the wagons that rolled through Thistleroot Hollow, full and bright and unbothered. The Stratholme Supply Company exists so that no one standing in a blighted field ever has to watch that again.  When the road is blocked by cultists, or bandits, or the kind of petty, well-fed corruption that starves the poor from behind a desk, well. The Friar puts down the reins. He rolls his sleeves past the faded blue knotwork on his forearms and the Light cracks off his hands like thunder off Aerie Peak.  \n\nCorruption, greed, bigotry, and hatred will be exorcised from this land, if Friar Baggins has anything to say about it. One Holy Shock at a time.  That is his ministry.  Or, as he would tell you himself, refilling his pipe on some riverbank at the edge of the world, with a fishing line in the water and absolutely no intention of catching anything urgently, that is his *mystery*.\n"};
+const $ = (id) => document.getElementById(id);
+const stage = $("stage");
+const params = new URLSearchParams(location.search);
+let fields = structuredClone(FRIAR);
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+function inlineFormat(text) {
+  let s = escapeHtml(text);
+  s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(^|[^*])\*(.+?)\*/g, "$1<em>$2</em>");
+  return s;
+}
+function parseStory(raw) {
+  const lines = String(raw || "").replace(/\r\n/g, "\n").replace(/\u00a0/g, " ").split("\n");
+  const blocks = [];
+  let buf = [];
+  const flush = () => {
+    const t = buf.join(" ").replace(/[ \t]+/g, " ").trim();
+    buf = [];
+    if (t) blocks.push({ type: "p", text: t });
+  };
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || /^-{3,}$/.test(trimmed) || /^─{6,}$/.test(trimmed)) { flush(); continue; }
+    const h = trimmed.match(/^#{1,3}\s+(.+)$/) || trimmed.match(/^\*\*(.+)\*\*$/);
+    if (h) { flush(); blocks.push({ type: "h", text: h[1].trim() }); continue; }
+    buf.push(trimmed);
+  }
+  flush();
+  return blocks;
+}
+function blockHTML(b) {
+  if (b.type === "h") return `<h2>${escapeHtml(b.text)}</h2>`;
+  return `<p>${inlineFormat(b.text)}</p>`;
+}
+function footnote(dept) {
+  const d = (dept || "").toLowerCase();
+  if (d.includes("research") || d.includes("r&d")) return "Curiosity encouraged. Ethics negotiable.";
+  if (d.includes("product") || d.includes("test")) return "Series G. Dalaran Innovation Enterprise (DIE) fund.";
+  if (d.includes("recruit")) return "Artisans, soldiers, and adventurers. All experience levels.";
+  if (d.includes("logistic") || d.includes("wagon") || d.includes("teamster")) return "Certified at loading. Transit is a separate matter.";
+  if (d.includes("soldier") || d.includes("guard")) return "Interference on the road may be resolved in the field.";
+  if (d.includes("adventur")) return "All classes and experience levels. Pay is in grain.";
+  if (d.includes("artisan") || d.includes("craft")) return "Workmanship is the associate's own. Certification covers the grain.";
+  return "Questions of origin: Office of Provenance, presently unstaffed.";
+}
+function bitsLine(f) {
+  return [f.post, f.origin, f.klass, f.former].map((s) => (s || "").trim()).filter(Boolean);
+}
+function scrollHTML(f, storyHTML) {
+  const name = (f.name || "").trim();
+  const bits = bitsLine(f);
+  const fileNo = (f.fileNo || "").trim();
+  return `<article class="scroll" id="scroll">
+    <div class="rod" aria-hidden="true"></div>
+    <div class="sheet">
+      <header class="seal">
+        ${SEAL}
+        <div class="wordmark">Stratholme Supply Company</div>
+        <p class="slogan">Grain for a stronger tomorrow.</p>
+        <p class="certline">Certified plague-free<span class="aster">*</span> grain</p>
+      </header>
+      ${name ? `<h1 class="name">${escapeHtml(name)}</h1>` : ""}
+      ${f.title ? `<p class="title">${escapeHtml(f.title)}</p>` : ""}
+      ${bits.length ? `<p class="bits">${bits.map(escapeHtml).join(" · ")}</p>` : ""}
+      ${f.motto ? `<p class="motto">“${escapeHtml(f.motto)}”</p>` : ""}
+      ${f.opening ? `<p class="opening">${escapeHtml(f.opening)}</p>` : ""}
+      <hr class="hair">
+      <div class="tale">${storyHTML}</div>
+      <footer class="colophon">
+        <p class="legal"><span class="aster">*</span>Plague-free at the time of harvest. The Company does not warrant the ground it grew in, the hands that carried it, or the city it left.</p>
+        <p class="wink">${escapeHtml(footnote(f.department))}</p>
+        <div class="tag">Community. Integrity. Grain.</div>
+        ${fileNo ? `<div class="fileno">${escapeHtml(fileNo)}</div>` : ""}
+      </footer>
+    </div>
+    <div class="rod bottom" aria-hidden="true"></div>
+  </article>`;
+}
+
+function readForm() {
+  return {
+    name: $("f-name").value, title: $("f-title").value, post: $("f-post").value,
+    department: $("f-dept").value, klass: $("f-class").value, origin: $("f-origin").value,
+    former: $("f-former").value, motto: $("f-motto").value, opening: $("f-open").value,
+    fileNo: $("f-file").value, story: $("f-story").value,
+  };
+}
+function writeForm(f) {
+  $("f-name").value = f.name || "";
+  $("f-title").value = f.title || "";
+  $("f-post").value = f.post || "";
+  $("f-dept").value = f.department || "";
+  $("f-class").value = f.klass || "";
+  $("f-origin").value = f.origin || "";
+  $("f-former").value = f.former || "";
+  $("f-motto").value = f.motto || "";
+  $("f-open").value = f.opening || "";
+  $("f-file").value = f.fileNo || "";
+  $("f-story").value = f.story || "";
+}
+function saveDraft() {
+  try { localStorage.setItem(KEY, JSON.stringify({ fields })); } catch (e) {}
+}
+function render() {
+  const blocks = parseStory(fields.story);
+  const story = blocks.length
+    ? blocks.map(blockHTML).join("")
+    : `<p class="empty">Statement not yet taken.</p>`;
+  // Built here. Pasted story is escapeHtml()'d before any tag is added.
+  stage.innerHTML = scrollHTML(fields, story);
+  const chars = (fields.story || "").length;
+  $("count").textContent = `One scroll · ${chars.toLocaleString()} characters`;
+  document.title = `${fields.name || "New associate"} — Stratholme Supply Company`;
+  document.documentElement.dataset.ready = "1";
+  const sc = $("scroll");
+  if (sc) document.documentElement.dataset.h = String(sc.offsetHeight);
+  const onFriar = fields.story === FRIAR.story && fields.name === FRIAR.name;
+  const onBlank = !(fields.name || fields.title || fields.story || fields.motto);
+  $("btnFriar").setAttribute("aria-pressed", onFriar ? "true" : "false");
+  $("btnBlank").setAttribute("aria-pressed", onBlank ? "true" : "false");
+}
+function load(next) {
+  fields = next;
+  writeForm(fields);
+  render();
+  if (!params.has("shot")) saveDraft();
+}
+function dirty() { return (fields.story || "").trim().length > 40; }
+
+$("btnFriar").onclick = () => {
+  if (dirty() && fields.story !== FRIAR.story && !confirm("Replace the current story with Friar's scroll?")) return;
+  load(structuredClone(FRIAR));
+};
+$("btnBlank").onclick = () => {
+  if (dirty() && !confirm("Clear this scroll for a new associate?")) return;
+  load({ name:"", title:"", post:"", department:"", klass:"", origin:"", former:"", motto:"", opening:"", fileNo:"", story:"" });
+};
+for (const id of ["f-name","f-title","f-post","f-dept","f-class","f-origin","f-former","f-motto","f-open","f-file","f-story"]) {
+  $(id).addEventListener("input", () => { fields = readForm(); render(); saveDraft(); });
+}
+
+function safeName(name) {
+  return (name || "Associate").replace(/[^\w\s.-]+/g, "").trim().replace(/\s+/g, "-").slice(0, 48) || "Associate";
+}
+function scrollToBlob() {
+  const el = $("scroll");
+  const w = el.offsetWidth;
+  const h = el.offsetHeight;
+  const scale = Math.min(1.35, 12000 / h);
+  el.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+  const xml = new XMLSerializer().serializeToString(el).replace(/<img\b([^>]*?)\s*\/?>/g, "<img$1 />");
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
+  <foreignObject x="0" y="0" width="${w}" height="${h}">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="width:${w}px;height:${h}px;margin:0;padding:0;background:#14110e">
+      <style>${$("sheet").textContent}</style>
+      ${xml}
+    </div>
+  </foreignObject>
+</svg>`;
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml;charset=utf-8" }));
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(w * scale);
+      canvas.height = Math.round(h * scale);
+      const ctx = canvas.getContext("2d");
+      ctx.scale(scale, scale);
+      ctx.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("empty image")), "image/png");
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("the scroll could not be drawn")); };
+    img.src = url;
+  });
+}
+function downloadBlob(blob, filename) {
+  const a = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function status(msg) { $("status").textContent = msg; }
+$("saveOne").onclick = async () => {
+  status("Saving the scroll…");
+  try {
+    const blob = await scrollToBlob();
+    downloadBlob(blob, `Stratholme - ${safeName(fields.name)}.png`);
+    status("Saved. Drag it into Discord and open it to read.");
+  } catch (e) {
+    status("This browser blocked the image save. Use Print / save PDF, or screenshot the scroll.");
+  }
+};
+$("doPrint").onclick = () => window.print();
+
+function boot() {
+  if (params.has("blank")) {
+    fields = { name:"", title:"", post:"", department:"", klass:"", origin:"", former:"", motto:"", opening:"", fileNo:"", story:"" };
+  } else if (!params.has("shot") && !params.has("friar")) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (saved && saved.fields) fields = saved.fields;
+    } catch (e) {}
+  }
+  writeForm(fields);
+  render();
+  if (params.has("shot")) document.body.classList.add("shot");
+  if (params.has("prove")) {
+    document.title = "PROVE-START";
+    scrollToBlob().then((blob) => {
+      document.title = "PROVED " + blob.size;
+    }).catch((err) => {
+      document.title = "PROVE-FAILED " + (err && err.message ? err.message : err);
+    });
+  }
+  if (params.has("tail")) {
+    const sc = $("scroll");
+    const shift = Math.max(0, sc.offsetHeight - (params.get("view") ? parseInt(params.get("view"), 10) : 1400));
+    sc.style.marginTop = (-shift) + "px";
+  }
+}
+boot();
+</script>
+</body>
+</html>
