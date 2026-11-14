@@ -252,10 +252,10 @@
   <div class="app">
     <aside class="desk" id="desk">
       <h1>Scroll</h1>
-      <p class="lede">Paste a story in their own words. The scroll is one image. Save it and post it. This panel is not in the image.</p>
+      <p class="lede">The example does not change. Template is yours, in this browser only.</p>
       <div class="row">
-        <button type="button" id="btnFriar" aria-pressed="true">Friar's scroll</button>
-        <button type="button" id="btnBlank" aria-pressed="false">New associate</button>
+        <button type="button" id="btnFriar" aria-pressed="true">Example</button>
+        <button type="button" id="btnBlank" aria-pressed="false">Template</button>
       </div>
       <label for="f-name">Name</label>
       <input id="f-name" autocomplete="off" placeholder="Name as it should read">
@@ -317,7 +317,8 @@
 <script>
 const SEAL_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 92"><path fill="#5c3d22" d="M40 2.5 L75 16.2 V41.5 C75 62.2 57.2 76.8 40 89.2 C22.8 76.8 5 62.2 5 41.5 V16.2 Z"/><path fill="none" stroke="#f3e4c4" stroke-width="0.9" d="M40 9 L67 20.2 V41.5 C67 58.6 53.2 70.6 40 80.6 C26.8 70.6 13 58.6 13 41.5 V20.2 Z"/><g fill="#f3e4c4"><rect x="38.35" y="30" width="3.3" height="40" rx="1.2"/><path d="M40 33c-7 1.2-12 6.2-11.2 10.2 4.2-1.6 8.2-5.6 11.2-10.2z"/><path d="M40 33c7 1.2 12 6.2 11.2 10.2-4.2-1.6-8.2-5.6-11.2-10.2z"/><path d="M40 44c-8 1.4-13.5 7-12.4 11.2 4.6-1.8 9-6.2 12.4-11.2z"/><path d="M40 44c8 1.4 13.5 7 12.4 11.2-4.6-1.8-9-6.2-12.4-11.2z"/><path d="M40 55c-6.5 1.1-11 5.6-10.2 9.2 3.8-1.4 7.4-5 10.2-9.2z"/><path d="M40 55c6.5 1.1 11 5.6 10.2 9.2-3.8-1.4-7.4-5-10.2-9.2z"/></g></svg>`;
 const SEAL = `<img class="crest" alt="Stratholme Supply Company" width="92" height="106" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(SEAL_SVG)}">`;
-const KEY = "ssc-scroll-v1";
+const TEMPLATE_KEY = "ssc-scroll-template-v1";
+let mode = "example";
 const FRIAR = {"name": "Friar Baggins", "title": "The Shockadin of the Forgotten Hollow", "post": "Proprietor", "department": "Field Supply", "klass": "Paladin (Shockadin)", "origin": "Aerie Peak", "former": "Wildhammer warrior", "motto": "Good folk are good folk. The rest get the Shock.", "opening": "Set down here in the manner of a tale told over ale, which is the only proper manner for such things. Although the Friar would insist on a pipe as well.", "fileNo": "SSC-0001", "story": "**Born Under Gryphon Wing**  \n  \nFriar Baggins was born a Wildhammer, in the long shadow of Aerie Peak, where the wind comes screaming off the Hinterlands and every dwarf child learns the cry of a gryphon before he learns his letters.  \n  \nHe was not, in his youth, a holy dwarf. He was barely a patient one.  \n  \nWhere other Wildhammer younglings took to the sky, to shamanism, or to the slow craft of stone and storm, young Baggins took to fighting. He was a warrior of the old, ugly sort — fueled by rage, stubborn as wet leather, and convinced that most problems in Azeroth could be solved by hitting them until they stopped being problems. He fought trolls in the green hills. He fought orcs when the Horde came north. He fought, on more than one occasion, other dwarves in mead halls over insults he could not afterward remember.  \n  \nThe rage served him, after a fashion. It kept him alive. It kept others alive too, though he would not have admitted at the time that this was the part that mattered.  \n  \nAge has a way of sanding a dwarf down to what is actually true about him. By the time there was grey in Baggins’ beard, he had begun to understand that he had never loved the fighting. He had loved standing between the fighting and the people who could not fight for themselves.  He just did not yet have a name for that. Or a faith for it.  \n  \n**The Village the Maps Forgot**  \n  \nEveryone remembers Lordaeron.  Everyone remembers Stratholme, and Andorhal, and the great blighted scar men now call the Plaguelands. Bards sing of Arthas. Priests preach of Uther. The Argent Dawn keeps its vigil at Light’s Hope, and rightly so.  Nobody remembers Thistleroot Hollow.  It was a little place.  \n\nA Wildhammer steading of a few dozen families, kin to Aerie Peak, tucked into the northwestern hills where the Hinterlands look toward Lordaeron. Too small for the maps the human kings kept. Too far from Ironforge to matter to the Bronzebeards. A place of smokehouses and trout streams and old grudges and older kindnesses.  \n\nThe plague did not care that it was too small to remember.  \n\nIt came on the wind and in the grain, in travelers who sickened on the road and in beasts that died standing in the fields. Then came the undeath behind it, as it always does. Baggins watched neighbors he had known since boyhood rise with empty eyes. He put down more of his own clan with his own hands in one autumn than he had enemies in all his warring years. There are things he did in Thistleroot Hollow that he has never spoken aloud, and never will. Some graves a dwarf digs in silence and carries in silence.  \n\nWhen it was over, most of his clan was gone.  What the plague began, abandonment finished.  The Alliance did come, after a fashion. Wagons rolled through, full of food and clean water and men in bright tabards with somewhere more important to be. Baggins begged and a Wildhammer does NOT beg lightly for grain, for medicine, for a priest, for anything.  \n\nThey looked at the hollow. They looked at the blighted fields.  *You chose to live this close to Lordaeron,* they told him. *If you don’t like it, abandon it and move.*  They had riches. They had food. They offered none of it.  That was the day the rage in Friar Baggins stopped being a fire he USED, and became a fire that USED HIM.  \n  \n**Exile Between River and Sea**  \n  \nHe left Thistleroot Hollow with the only family he had left: his father.  *Or what was left of his father.* A husk of a man.  The old dwarf had survived the plague years in body, but the man inside had gone somewhere quiet and far away and did not come back. He ate when food was put in his hands. He stared at the hills. Sometimes he called for people who were twenty years in the ground.  \n\nBaggins carried him into exile anyway. It is a particular kind of love, carrying a husk and calling it father, but it is love all the same.  \n  \nThey settled where nobody wanted to settle, on the wild coast where the rivers of the Hinterlands run down toward Arathi, at the very edge of the frontier. A driftwood shack. A cold hearth. What game he could take, what fish he could catch, what work a broken old warrior could do without having to look another person in the eye.  \n\nThe rage never left him in those years. He kept it banked down the only ways he knew: strong ale, and a pipe of good leaf — the halflings’ herb, procured through channels he will still, to this day, decline to explain.  And slowly, without ever deciding to, the two exiles grew fond of the wild things around them. Baggins splinted the wing of a fallen gryphon chick and fed it by hand for a month. He left fish heads out for a three-legged fox. He learned the moods of the river the way his shaman kin learned them, by listening long enough that listening became a kind of prayer.  He never converted. The elements were never his to command, and he knew it. But he became something *almost* shamanistic out there on the coast, a dwarf who had lost his people and been quietly adopted by a place.  \n \nHis father died on a still morning, facing the water. Baggins buried him facing Aerie Peak, and sat by the grave until the pipe went out.  Then he was alone, and the rage had nothing left to protect.  \n \n**The Bear, the Paladin, and the Riverbank**  \n  \nThe Light, when it finally came for Friar Baggins, did not come in a cathedral. It came in the shape of a wounded bear.  \n\nHe found her by the river with her leg torn open from a deadfall trap, some poacher’s cruelty left to rot. A wiser dwarf would have left her. Baggins, who had never been accused of wisdom, spent the better part of an afternoon speaking to her in the low, steady voice you use for frightened things, and was most of the way through binding the leg with strips of his own shirt when he heard the harness-bells of a warhorse behind him.  \n  \nThe human was a paladin, Sir Emric Hale, late of the Argent Dawn, road-worn and grey at the temples. He said nothing at first. He simply dismounted, knelt in the mud beside a half-feral dwarf and a very unhappy bear, laid his hands above the wound, and prayed.  The Light closed the leg like a seam drawn shut. The bear, with the sound ingratitude of all wild things, bolted into the trees.  The two of them looked at each other. Then Baggins did the only sensible thing. He got out the fishing lines, the pipe, and the ale.  \n\nThey sat on that riverbank until the stars came up. They fished, and smoked, and drank, and traded tales the way old soldiers do.  Slowly, sideways, and never quite starting with the part that hurts.  Eventually, the talk turned to the undead.  Baggins told him about Thistleroot Hollow.  When he finished, Sir Emric was very quiet. Then the Light came up in the man’s eyes like sunrise off deep water, and he said, with the absolute certainty of the truly called, that this meeting was no coincidence at all.  \n\nEmric was on a pilgrimage of his own devising: walking the countryside of the fallen north to trace the true origins of the undeath.  A plague grain, Scourge cauldrons, cultists and kings and to bear witness to an uncomfortable truth he had come to believe with his whole heart.  \n \nThat the Forsaken were not the Scourge.  \n \nThat the free-willed dead of Lordaeron were victims of the same horror that had taken Thistleroot Hollow and not its authors. The idea that good, kind folk needed protecting regardless of what shape they wore, living or dead, Alliance or Horde.  It was, for Friar Baggins, a concerning sermon. It asked him to lay down the oldest and most justified grudge of his life. It asked him to let vigilance in where vengeance had lived.  It asked him, in short, to be reborn.  \n\n**A Pilgrimage Instead of a Seminary**  \n  \nFriar Baggins was never classically trained in the Light, and it shows, and he would not have it any other way.  No cathedral school would have taken a pipe-smoking, ale-swilling, rage-scarred old Wildhammer who questioned everything and knelt for nothing. So Emric trained him the only way that could have worked: on the road. They walked the holy places of Azeroth together. Light’s Hope Chapel, where the dead paladins keep their long watch. Uther’s Tomb, where Baggins’ hands finally stopped shaking. The ruined cathedral at Stratholme, where he wept without shame. Northshire Abbey, and the great Cathedral of Stormwind, and a dozen nameless roadside shrines where some forgotten soul had once stopped to pray and left a candle’s worth of hope behind.  \n  \nAt each place they prayed, and with each incantation, the Light came a little more readily to the old dwarf’s hands.  But it never came the way it comes to proper paladins. It would not sit politely in a blade or flow through the measured forms of sword-and-shield. Baggins had spent a lifetime holding a storm inside his chest, and the Light, finding that storm there, simply *used* it. It comes off him in short, searing bursts.  A crack of holy fire at close range, like a Wildhammer stormhammer thrown from an empty hand. The Argent Dawn chaplains have no tidy category for him. \n\nHis fellow paladins call him, half in jest and half in genuine respect, a **shockadin**.  He considers this the finest title he has ever earned.  \n  \nSomewhere on that long road in Brill, of all places he met a Forsaken woman who had known Thistleroot Hollow in life. She remembered his mother’s name. She wept, in the dry way the dead weep, for the same fields he wept for. Baggins laid a blessing on her with hands that trembled, and felt the last of the old grudge go out of him like a splinter drawn at last.  \n \nThe Forsaken were not *them*. They never had been.  \n  \n**The Stratholme Supply Company**  \n \nThese days, if you travel the roads of the fallen north, you may see his wagons.  They bear a simple mark: a burst of golden light over a laden sack. Beneath it, in plain letters: **Stratholme Supply Company**.  \n\nIt is an odd name for an odd enterprise, born quite deliberately out of the ruins of the old city, so that Baggins never forgets what it is for. The Company hauls untainted grain, clean water, medicine, lamp oil, timber, and coffins.  Always coffins, to the places the great factions forget. Wildhammer steadings. Argent outposts. Forsaken hamlets. Human refugee camps and troll fishing villages in equal measure.  \n  \nHe asks what folk can pay. He very often accepts what folk cannot.  \n\nHe remembers the wagons that rolled through Thistleroot Hollow, full and bright and unbothered. The Stratholme Supply Company exists so that no one standing in a blighted field ever has to watch that again.  When the road is blocked by cultists, or bandits, or the kind of petty, well-fed corruption that starves the poor from behind a desk, well. The Friar puts down the reins. He rolls his sleeves past the faded blue knotwork on his forearms and the Light cracks off his hands like thunder off Aerie Peak.  \n\nCorruption, greed, bigotry, and hatred will be exorcised from this land, if Friar Baggins has anything to say about it. One Holy Shock at a time.  That is his ministry.  Or, as he would tell you himself, refilling his pipe on some riverbank at the edge of the world, with a fishing line in the water and absolutely no intention of catching anything urgently, that is his *mystery*.\n"};
 const $ = (id) => document.getElementById(id);
 const stage = $("stage");
@@ -392,7 +393,6 @@ function scrollHTML(f, storyHTML) {
       <hr class="hair">
       <div class="tale">${f.opening ? `<p class="lead">${escapeHtml(f.opening)}</p>` : ""}${storyHTML}</div>
       <footer class="colophon">
-        <p class="legal"><span class="aster">*</span>Plague-free at the time of harvest. The Company does not warrant the ground it grew in, the hands that carried it, or the city it left.</p>
         <p class="wink">${escapeHtml(footnote(f.department))}</p>
         <div class="tag">Community. Integrity. Grain.</div>
         ${fileNo ? `<div class="fileno">${escapeHtml(fileNo)}</div>` : ""}
@@ -423,8 +423,25 @@ function writeForm(f) {
   $("f-file").value = f.fileNo || "";
   $("f-story").value = f.story || "";
 }
-function saveDraft() {
-  try { localStorage.setItem(KEY, JSON.stringify({ fields })); } catch (e) {}
+function saveTemplate() {
+  if (mode !== "template") return;
+  try { localStorage.setItem(TEMPLATE_KEY, JSON.stringify({ fields: readForm() })); } catch (e) {}
+}
+function blankFields() {
+  return { name:"", title:"", post:"", department:"", klass:"", origin:"", former:"", motto:"", opening:"", fileNo:"", story:"" };
+}
+function loadTemplate() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(TEMPLATE_KEY) || "null");
+    if (saved && saved.fields) return saved.fields;
+  } catch (e) {}
+  return blankFields();
+}
+function lockForm() {
+  const locked = mode === "example";
+  for (const id of ["f-name","f-title","f-post","f-dept","f-class","f-origin","f-former","f-motto","f-open","f-file","f-story"]) {
+    $(id).readOnly = locked;
+  }
 }
 function fitTale() {
   const tale = document.querySelector(".tale");
@@ -502,29 +519,32 @@ function render() {
   document.title = `${fields.name || "New associate"} — Stratholme Supply Company`;
   document.documentElement.dataset.ready = "1";
   requestAnimationFrame(() => requestAnimationFrame(fitTale));
-  const onFriar = fields.story === FRIAR.story && fields.name === FRIAR.name;
-  const onBlank = !(fields.name || fields.title || fields.story || fields.motto);
-  $("btnFriar").setAttribute("aria-pressed", onFriar ? "true" : "false");
-  $("btnBlank").setAttribute("aria-pressed", onBlank ? "true" : "false");
+  $("btnFriar").setAttribute("aria-pressed", mode === "example" ? "true" : "false");
+  $("btnBlank").setAttribute("aria-pressed", mode === "template" ? "true" : "false");
+  lockForm();
+  const note = document.getElementById("status");
+  if (note) note.textContent = mode === "example"
+    ? "Example. It does not change."
+    : "Your template. Saved in this browser only. It does not change the example.";
 }
-function load(next) {
+function load(next, nextMode) {
+  mode = nextMode;
   fields = next;
   writeForm(fields);
   render();
-  if (!params.has("shot")) saveDraft();
+  if (!params.has("shot")) saveTemplate();
 }
 function dirty() { return (fields.story || "").trim().length > 40; }
 
-$("btnFriar").onclick = () => {
-  if (dirty() && fields.story !== FRIAR.story && !confirm("Replace the current story with Friar's scroll?")) return;
-  load(structuredClone(FRIAR));
-};
-$("btnBlank").onclick = () => {
-  if (dirty() && !confirm("Clear this scroll for a new associate?")) return;
-  load({ name:"", title:"", post:"", department:"", klass:"", origin:"", former:"", motto:"", opening:"", fileNo:"", story:"" });
-};
+$("btnFriar").onclick = () => load(structuredClone(FRIAR), "example");
+$("btnBlank").onclick = () => load(loadTemplate(), "template");
 for (const id of ["f-name","f-title","f-post","f-dept","f-class","f-origin","f-former","f-motto","f-open","f-file","f-story"]) {
-  $(id).addEventListener("input", () => { fields = readForm(); render(); saveDraft(); });
+  $(id).addEventListener("input", () => {
+    if (mode !== "template") return;
+    fields = readForm();
+    render();
+    saveTemplate();
+  });
 }
 
 function safeName(name) {
@@ -588,14 +608,8 @@ $("saveOne").onclick = async () => {
 $("doPrint").onclick = () => window.print();
 
 function boot() {
-  if (params.has("blank")) {
-    fields = { name:"", title:"", post:"", department:"", klass:"", origin:"", former:"", motto:"", opening:"", fileNo:"", story:"" };
-  } else if (!params.has("shot") && !params.has("friar")) {
-    try {
-      const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-      if (saved && saved.fields) fields = saved.fields;
-    } catch (e) {}
-  }
+  fields = params.has("blank") ? blankFields() : structuredClone(FRIAR);
+  mode = params.has("blank") ? "template" : "example";
   writeForm(fields);
   render();
   if (params.has("shot")) document.body.classList.add("shot");
